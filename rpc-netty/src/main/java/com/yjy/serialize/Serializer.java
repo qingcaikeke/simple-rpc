@@ -1,5 +1,8 @@
 package com.yjy.serialize;
 
+/**
+ * 序列化器？
+ */
 public interface Serializer <T>{
     /**
      * 计算对象序列化后的长度，主要用于申请存放序列化数据的字节数组

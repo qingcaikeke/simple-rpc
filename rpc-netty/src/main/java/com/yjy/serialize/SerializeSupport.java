@@ -7,8 +7,11 @@ import com.yjy.spi.ServiceLoadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.yjy.spi.ServiceSupport;
-//对外提供服务的就只有一个 SerializeSupport 静态类
+/**
+ * 对外提供服务的就只有一个 SerializeSupport 静态类
+ */
 public class SerializeSupport {
+    //clazz的作用是让logger与实例关联
     private static final Logger logger = LoggerFactory.getLogger(SerializeSupport.class);
     private static Map<Class<?>/*序列化对象类型*/, Serializer<?>/*序列化实现*/> serializerMap = new HashMap<>();
     private static Map<Byte/*序列化实现类型*/, Class<?>/*序列化对象类型*/> typeMap = new HashMap<>();
@@ -85,7 +88,7 @@ public class SerializeSupport {
     }
 
     /**
-     *通过对象类型获取对应的序列化实现，然后调用序列化实现的方法将对象序列化为字节数组。
+     *通过对象类型获取对应的序列化器，然后调用序列化实现的方法将对象序列化为字节数组。
      * 序列化字节数组的第一个字节存储了序列化实现类型
      */
     public static <E> byte[] serialize(E entry) {
@@ -94,6 +97,7 @@ public class SerializeSupport {
         if (serializer == null) {
             throw new SerializeException(String.format("Unknown entry class type: %s", entry.getClass().toString()));
         }
+        //根据序列化器提供的size方法构造bites数组，再通过serialize方法完成序列化存入数组
         byte[] bytes = new byte[serializer.size(entry) + 1];
         bytes[0] = serializer.type();
         serializer.serialize(entry, bytes, 1, bytes.length - 1);

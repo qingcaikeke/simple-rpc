@@ -7,6 +7,9 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+/**
+ * 用于服务加载和单例管理的辅助类
+ */
 public class ServiceSupport {
     private final static Map<String, Object> singletonServices = new HashMap<>();
     public synchronized static <S> S load(Class<S> service) {
