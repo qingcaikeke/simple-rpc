@@ -9,10 +9,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * invocation：调用
- * RPC 框架的服务端如何来处理客户端发送的 RPC 请求
- * RPC 框架的服务端主要需要实现下面这两个功能：
- * 1.服务端的业务代码把服务的实现类注册到 RPC 框架中 ;
- * 2.接收客户端桩发出的请求，调用服务的实现类并返回结果。
+ * 根据请求信息，找到请求类型，去注册表registry找到对应的处理器
+ * 完成处理后将结果返回
  */
 @ChannelHandler.Sharable
 public class RequestInvocation extends SimpleChannelInboundHandler<Command> {

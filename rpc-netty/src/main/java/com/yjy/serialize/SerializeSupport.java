@@ -9,11 +9,15 @@ import org.slf4j.LoggerFactory;
 import com.yjy.spi.ServiceSupport;
 /**
  * 对外提供服务的就只有一个 SerializeSupport 静态类
+ * 通用静态类，支持任何对象类型的序列化
  */
 public class SerializeSupport {
     //clazz的作用是让logger与实例关联
     private static final Logger logger = LoggerFactory.getLogger(SerializeSupport.class);
+    //序列化的时候使用，通过待序列化类型（如string）找到对应的序列化器serializer，通过序列化器完成反序列化
     private static Map<Class<?>/*序列化对象类型*/, Serializer<?>/*序列化实现*/> serializerMap = new HashMap<>();
+
+    //反序列化的时候使用，通过bytes数组中的第一个元素：type，找到对应的被序列化类型（String），进而找到序列化器serializer
     private static Map<Byte/*序列化实现类型*/, Class<?>/*序列化对象类型*/> typeMap = new HashMap<>();
 
     /**
@@ -25,7 +29,7 @@ public class SerializeSupport {
             registerType(serializer.type(), serializer.getSerializeClass(), serializer);
 
             logger.info("Found serializer, class: {}, type: {}.",
-                    serializer.getSerializeClass().getCanonicalName(),
+                    serializer.getSerializeClass().getCanonicalName(),//规范化类名
                     serializer.type());
         }
     }
@@ -45,16 +49,14 @@ public class SerializeSupport {
     }
 
     /**
-     *用于从字节数组中获取序列化实现类型。
-     * 在字节数组的第一个字节中存储了序列化实现类型
+     *用于从字节数组中获取被序列化的类型标号：type
      */
     private static byte parseEntryType(byte[] buffer) {
         return buffer[0];
     }
 
     /**
-     *通过序列化实现类型获取对应的对象类型，
-     * 然后调用私有的parse方法进行反序列化操作。这个方法处理了类型不匹配和未知类型的情况
+     * 从map中根据type获取实际的被序列化对象类型String
      */
     private static <E> E parse(byte[] buffer, int offset, int length) {
         byte type = parseEntryType(buffer);
@@ -69,7 +71,8 @@ public class SerializeSupport {
 
     /**
      * parse的方法重载
-     *实际执行反序列化操作，并进行类型检查
+     * 根据传来的被序列化对象类型，找到序列化器，完成序列化
+     * 并进行类型检查
      */
     private static <E> E parse(byte[] buffer,int offset,int length,Class<E> eClass){
         Object entry = serializerMap.get(eClass).parse(buffer, offset, length);

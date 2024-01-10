@@ -1,7 +1,7 @@
 package com.yjy.serialize;
 
 /**
- * 序列化器？
+ * 序列化器
  */
 public interface Serializer <T>{
     /**
@@ -27,12 +27,14 @@ public interface Serializer <T>{
      */
     T parse(byte[] bytes,int offset,int length);
     /**
-     * 用一个字节标识对象类型，每种类型的数据应该具有不同的类型值
+     * 被序列化的对象类型，
+     * 每种类型的数据宏定义成不同的值
      */
     byte type();
 
     /**
-     * 返回序列化对象类型的 Class 对象。
+     * 返回序列化器负责的序列化类型。
+     * 用于SerializeSupport加载所有得到序列化器存到map中
      */
     Class<T> getSerializeClass();
 

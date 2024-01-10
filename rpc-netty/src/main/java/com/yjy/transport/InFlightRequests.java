@@ -6,7 +6,8 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 /**
- * 存放了所有在途的请求，也就是已经发出了请求但还没有收到响应的这些 responseFuture 对象
+ * 存放了所有在途的请求，
+ * 也就是已经发出了请求但还没有收到响应的这些 responseFuture 对象
  */
 public class InFlightRequests implements Closeable {
     //timeout:超时，请求的超时时间

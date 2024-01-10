@@ -1,14 +1,13 @@
 package com.yjy.client;
 
 import com.itranswarp.compiler.JavaStringCompiler;
+import com.yjy.client.stubs.AbstractStub;
 import com.yjy.transport.Transport;
 
 import java.util.Map;
 /**
- * DynamicStubFactory类通过反射获取传入的服务类对象的信息，
- * 然后使用这些信息填充了一个存根（stub）的源代码模板。
- * 接着，它使用动态编译器（JavaStringCompiler）将填充好的源代码编译成字节码，并通过类加载器加载生成的类。
- * 生成的类就是一个动态代理类，也就是所说的桩（stub）。
+ * 实际生成桩，接收transport和serviceClass（创建一个什么类型的桩）
+ *  根据接收的信息，填充模板生成源代码，编译加载得到桩，再填充transport
  * 这个桩类具有与服务类相同的方法签名，但它的实现中包含了远程调用的逻辑。
  * 当你调用这个桩的方法时，实际上是通过网络传输调用了远程服务的相应方法。
  */
@@ -35,6 +34,17 @@ public class DynamicStubFactory implements StubFactory{
                     "        );\n" +
                     "    }\n" +
                     "}";
+//      示例：写死只能有一个参数，参数和返回值的类型都是 String 类型
+//    public class HelloServiceStub extends AbstractStub implements HelloService{
+//        @Override
+//        public String hello (String arg){
+//            return SerializeSupport.parse(
+//                    invokeRemote(
+//                        //invokeRemote会给request加上header，再封装成command，通关transport发送（在abstractStub里）
+//                            new RpcRequest(HelloService,hello,SerializeSupport.serialize(arg));
+//        }
+//    }
+
     @Override
     @SuppressWarnings("unchecked")
     public <T> T createStub(Transport transport, Class<T> serviceClass) {

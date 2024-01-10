@@ -4,6 +4,7 @@ import com.yjy.transport.command.Command;
 
 /**
  * 请求处理器
+ * 一个与请求类型对应的type，一个处理函数，接收requestCommand，返回responseCommand
  */
 public interface RequestHandler {
     /**

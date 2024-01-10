@@ -3,7 +3,11 @@ package com.yjy.serialize.impl;
 import com.yjy.serialize.Serializer;
 
 import java.nio.charset.StandardCharsets;
-//一个支持 String 类型的序列化器
+
+/**
+ * SerializeSupport对外开放，从所有序列化器中找的要用的
+ * StringSerializer实际实现序列化
+ */
 public class StringSerializer implements Serializer<String> {
 
     @Override

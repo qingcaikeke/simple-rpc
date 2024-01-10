@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * RPC 框架服务端需要实现的两个功能
- * 1.注册 RPC 服务
+ * 1.真正工作的服务把自己注册进serviceProviders
  * 2.处理客户端 RPC 请求
  */
 

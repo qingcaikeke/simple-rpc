@@ -1,6 +1,7 @@
 package com.yjy.client.stubs;
 
 /**
+ * 构建一个rpc请求
  * 接口名，方法名，序列化后的参数
  */
 public class RpcRequest {

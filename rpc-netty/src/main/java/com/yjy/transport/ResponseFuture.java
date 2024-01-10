@@ -4,6 +4,11 @@ import com.yjy.transport.command.Command;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * 用于异步获取远程调用结果的机制
+ *代表一个尚未完成的远程调用，允许客户端在未来的某个时间点获取到调用的结果。
+ * 包含requestId，CompletableFuture，和时间戳
+ */
 public class ResponseFuture {
     private final int requestId;
     private final CompletableFuture<Command> future;
