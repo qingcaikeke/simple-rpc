@@ -21,7 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * 注册中心的实现类
  * 读写一个本地文件，
- * 实现注册服务 registerService 方法时，把服务提供者保存到本地文件中；
+ * 实现注册服务 registerService 方法时，把服务提供者保存到本地文件中；（service+uriList）
  * 实现查找服务 lookupService 时，就是去本地文件中读出所有的服务提供者，
  * 找到对应的服务提供者，然后返回
  */
@@ -56,6 +56,9 @@ public class LocalFileNameService implements NameService {
         logger.info("Register service: {}, uri: {}.", serviceName, uri);
         try(RandomAccessFile raf = new RandomAccessFile(file, "rw");
             FileChannel fileChannel = raf.getChannel()) {
+            //本地文件它是一个共享资源，它会被 RPC 框架所有的客户端和服务端并发读写
+            //文件会被多个进程读写，但一般的程序语言提供的锁只能锁同一进程内
+            //因此必须使用由操作系统提供的文件锁。
             FileLock lock = fileChannel.lock();
             try {
                 int fileLength = (int) raf.length();

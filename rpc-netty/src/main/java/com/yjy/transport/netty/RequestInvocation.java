@@ -22,7 +22,8 @@ public class RequestInvocation extends SimpleChannelInboundHandler<Command> {
     }
 
     /**
-     *从请求中拿到对应的请求类型，找到对应的请求处理器，
+     * 接收到桩的command后在这处理，返回的也是command
+     * 从请求中拿到对应的请求类型，在注册中心中，找到对应的请求处理器，
      * 处理后把结果发送给客户端
      */
     @Override

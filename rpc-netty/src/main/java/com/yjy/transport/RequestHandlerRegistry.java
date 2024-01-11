@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 命令注册机制，根据请求类型分发到对应的处理类或处理方法
+ * 单例，共有的getInstance方法和私有的构造方法
  * 服务器，从注册表（registry）中根据请求类型（type）找到对应的请求处理器（handler）
  */
 

@@ -17,15 +17,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * RPC 框架服务端需要实现的两个功能
- * 1.真正工作的服务把自己注册进serviceProviders
- * 2.处理客户端 RPC 请求
+ * 本例中服务端只需要处理一种类型的请求，所以只实现了一个命令处理器
+ * 具体的请求处理器实现了请求处理和服务注册（请求名，请求实例）
  */
 
 @Singleton//单例
 public class RpcRequestHandler implements RequestHandler, ServiceProviderRegistry{
     private static final Logger logger = LoggerFactory.getLogger(RpcRequestHandler.class);
     private Map<String/*服务名*/, Object/*服务实现类的实例*/> serviceProviders = new HashMap<>();
+
+    /**
+     * 接到 requestCommand 请求命令
+     * 里面有请求头和request，request里有方法名，方法参数
+     * 根据方法名找到对应的provider，反射得到对应的方法，调用得到结果
+     * 封装结果返回
+     */
     @Override
     public Command handle(Command requestCommand) {
         Header header = requestCommand.getHeader();

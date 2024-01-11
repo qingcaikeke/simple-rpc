@@ -19,8 +19,7 @@ public interface NameService {
     Collection<String> supportedSchemes();
 
     /**
-     * 连接注册中心
-     * @param nameServiceUri 注册中心地址
+     * 给定注册中心的uri，建立与注册中心的连接
      */
     void connect(URI nameServiceUri);
     /**

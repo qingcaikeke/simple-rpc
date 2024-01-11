@@ -32,9 +32,7 @@ public interface RpcAccessPoint extends Closeable {
 
     /**
      * 获取注册中心的引用
-     * @param nameServiceUri 注册中心URI
-     * @return 注册中心引用
-     * default 通用并且不会改变的
+     * 默认方法是在接口中提供一个默认的实现，这样在实现该接口的类中，如果没有为该方法提供具体实现，就会使用默认的方法。
      * 加载所有nameService的实现类，根据给定的uri中的协议，去匹配支持这个协议的实现类
      * 连接并返回这个实现的引用
      * 系统可以根据 URI 中的协议，动态地来选择不同的注册中心实现
@@ -44,7 +42,7 @@ public interface RpcAccessPoint extends Closeable {
         Collection<NameService> nameServices = ServiceSupport.loadAll(NameService.class);
         for (NameService nameService : nameServices) {
             if(nameService.supportedSchemes().contains(nameServiceUri.getScheme())) {
-                //todo?为什么connect是在这用的？
+
                 nameService.connect(nameServiceUri);
                 return nameService;
             }
